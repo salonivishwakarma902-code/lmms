@@ -1,7 +1,7 @@
 set(LMMS_SRCS
 	${LMMS_SRCS}
 
-    ../include/AntigravityServer.h
+
 	core/AudioBuffer.cpp
 	core/AntigravityServer.cpp
 	core/AudioBusHandle.cpp

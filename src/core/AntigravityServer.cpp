@@ -1,10 +1,12 @@
 #include "AntigravityServer.h"
 #include "Engine.h"
 #include "Song.h"
-#include "InstrumentTrack.h"
+#include "Track.h"
 #include "Mixer.h"
 #include <QDebug>
 #include <QHostAddress>
+#include <QString>
+#include <QByteArray>
 
 namespace lmms {
 
@@ -93,7 +95,8 @@ void AntigravityServer::processCommandMainThread(const QJsonObject& command) {
 
 void AntigravityServer::sendResponse(QTcpSocket* client, const QJsonObject& response) {
     QJsonDocument doc(response);
-    client->write(doc.toJson(QJsonDocument::Compact) + "\n");
+    client->write(doc.toJson(QJsonDocument::Compact));
+    client->write("\n");
 }
 
 QJsonObject AntigravityServer::handleSetTempo(const QJsonObject& args) {
@@ -110,7 +113,7 @@ QJsonObject AntigravityServer::handleCreateTrack(const QJsonObject& args) {
     QString type = args["type"].toString("instrument");
     
     if (type == "instrument") {
-        InstrumentTrack* track = new InstrumentTrack(Engine::getSong());
+        Track* track = Track::create(Track::Type::Instrument, Engine::getSong());
         if (args.contains("name")) {
             track->setName(args["name"].toString());
         }
@@ -141,3 +144,5 @@ QJsonObject AntigravityServer::handleStop(const QJsonObject& args) {
 }
 
 } // namespace lmms
+
+#include "moc_AntigravityServer.cpp"
