@@ -58,11 +58,7 @@ void AntigravityServer::onReadyRead() {
 
     if (doc.isObject()) {
         QJsonObject cmd = doc.object();
-        // Since we are reading from socket, we must execute LMMS state changes on the main thread.
-        // We emit the signal which is queued to processCommandMainThread
-        
-        // We can temporarily attach the client pointer to send response back
-        cmd["_client_ptr"] = reinterpret_cast<qint64>(client);
+        cmd["_client_ptr"] = QString::number(reinterpret_cast<quintptr>(client));
         emit commandReceived(cmd);
     }
 }
@@ -88,7 +84,7 @@ void AntigravityServer::processCommandMainThread(const QJsonObject& command) {
         response["message"] = "Unknown action";
     }
 
-    qint64 clientPtr = command["_client_ptr"].toVariant().toLongLong();
+    quintptr clientPtr = command["_client_ptr"].toString().toULongLong();
     QTcpSocket* client = reinterpret_cast<QTcpSocket*>(clientPtr);
     if (client && m_clients.contains(client)) {
         sendResponse(client, response);
