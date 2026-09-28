@@ -84,7 +84,7 @@ void AntigravityServer::processCommandMainThread(const QJsonObject& command) {
         response["message"] = "Unknown action";
     }
 
-    quintptr clientPtr = command["_client_ptr"].toString().toULongLong();
+    quintptr clientPtr = static_cast<quintptr>(command["_client_ptr"].toString().toULongLong());
     QTcpSocket* client = reinterpret_cast<QTcpSocket*>(clientPtr);
     if (client && m_clients.contains(client)) {
         sendResponse(client, response);
@@ -125,6 +125,7 @@ QJsonObject AntigravityServer::handleCreateTrack(const QJsonObject& args) {
 }
 
 QJsonObject AntigravityServer::handlePlay(const QJsonObject& args) {
+    Q_UNUSED(args);
     QJsonObject res;
     Engine::getSong()->playSong();
     res["status"] = "success";
@@ -132,6 +133,7 @@ QJsonObject AntigravityServer::handlePlay(const QJsonObject& args) {
 }
 
 QJsonObject AntigravityServer::handleStop(const QJsonObject& args) {
+    Q_UNUSED(args);
     QJsonObject res;
     Engine::getSong()->stop();
     res["status"] = "success";
