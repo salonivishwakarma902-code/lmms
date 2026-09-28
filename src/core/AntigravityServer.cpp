@@ -4,6 +4,7 @@
 #include "InstrumentTrack.h"
 #include "Mixer.h"
 #include <QDebug>
+#include <QHostAddress>
 
 namespace lmms {
 
@@ -102,7 +103,7 @@ void AntigravityServer::sendResponse(QTcpSocket* client, const QJsonObject& resp
 QJsonObject AntigravityServer::handleSetTempo(const QJsonObject& args) {
     QJsonObject res;
     int bpm = args["bpm"].toInt(140);
-    Engine::getSong()->getTempoModel()->setValue(bpm);
+    Engine::getSong()->setTempo(bpm);
     res["status"] = "success";
     res["message"] = QString("Tempo set to %1").arg(bpm);
     return res;

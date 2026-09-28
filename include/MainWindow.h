@@ -40,6 +40,8 @@ class QGridLayout;
 namespace lmms
 {
 
+class AntigravityServer;
+
 namespace gui
 {
 
@@ -214,7 +216,7 @@ private:
 	};
 
 	MovableQMdiArea * m_workspace;
-	class lmms::AntigravityServer* m_antigravityServer;
+	AntigravityServer* m_antigravityServer;
 
 	QWidget * m_toolBar;
 	QGridLayout * m_toolBarLayout;
